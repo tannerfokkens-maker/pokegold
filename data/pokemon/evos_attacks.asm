@@ -221,6 +221,7 @@ BeedrillEvosAttacks:
 	db 30, PURSUIT
 	db 35, PIN_MISSILE
 	db 40, AGILITY
+	db 45, U_TURN
 	db 0 ; no more level-up moves
 
 PidgeyEvosAttacks:
@@ -1540,6 +1541,7 @@ WeezingEvosAttacks:
 	db 21, SLUDGE
 	db 25, SMOKESCREEN
 	db 33, HAZE
+	db 38, WILL_O_WISP
 	db 44, EXPLOSION
 	db 51, DESTINY_BOND
 	db 0 ; no more level-up moves
@@ -2288,6 +2290,7 @@ HoothootEvosAttacks:
 	db 22, REFLECT
 	db 28, TAKE_DOWN
 	db 34, CONFUSION
+	db 40, ROOST
 	db 48, DREAM_EATER
 	db 0 ; no more level-up moves
 
@@ -2303,6 +2306,7 @@ NoctowlEvosAttacks:
 	db 25, REFLECT
 	db 33, TAKE_DOWN
 	db 41, CONFUSION
+	db 47, ROOST
 	db 57, DREAM_EATER
 	db 0 ; no more level-up moves
 
@@ -2473,6 +2477,7 @@ NatuEvosAttacks:
 	db 20, TELEPORT
 	db 30, FUTURE_SIGHT
 	db 40, CONFUSE_RAY
+	db 45, ROOST
 	db 50, PSYCHIC_M
 	db 0 ; no more level-up moves
 
@@ -2485,6 +2490,7 @@ XatuEvosAttacks:
 	db 20, TELEPORT
 	db 35, FUTURE_SIGHT
 	db 50, CONFUSE_RAY
+	db 55, ROOST
 	db 65, PSYCHIC_M
 	db 0 ; no more level-up moves
 
@@ -2632,6 +2638,7 @@ JumpluffEvosAttacks:
 	db 22, LEECH_SEED
 	db 33, COTTON_SPORE
 	db 44, MEGA_DRAIN
+	db 50, U_TURN
 	db 0 ; no more level-up moves
 
 AipomEvosAttacks:
@@ -2679,6 +2686,7 @@ YanmaEvosAttacks:
 	db 31, SUPERSONIC
 	db 37, SWIFT
 	db 43, SCREECH
+	db 49, U_TURN
 	db 0 ; no more level-up moves
 
 WooperEvosAttacks:
@@ -2743,6 +2751,8 @@ MurkrowEvosAttacks:
 	db 26, NIGHT_SHADE
 	db 31, FAINT_ATTACK
 	db 41, MEAN_LOOK
+	db 46, ROOST
+	db 51, BRAVE_BIRD
 	db 0 ; no more level-up moves
 
 SlowkingEvosAttacks:
@@ -2836,6 +2846,7 @@ DunsparceEvosAttacks:
 	db 26, PURSUIT
 	db 30, SCREECH
 	db 38, TAKE_DOWN
+	db 42, ROOST
 	db 0 ; no more level-up moves
 
 GligarEvosAttacks:
@@ -2847,6 +2858,7 @@ GligarEvosAttacks:
 	db 28, FAINT_ATTACK
 	db 36, SLASH
 	db 44, SCREECH
+	db 48, U_TURN
 	db 52, GUILLOTINE
 	db 0 ; no more level-up moves
 
@@ -3078,6 +3090,7 @@ OctilleryEvosAttacks:
 DelibirdEvosAttacks:
 	db 0 ; no more evolutions
 	db 1, PRESENT
+	db 25, ROOST
 	db 0 ; no more level-up moves
 
 MantineEvosAttacks:
@@ -3089,6 +3102,7 @@ MantineEvosAttacks:
 	db 25, TAKE_DOWN
 	db 32, AGILITY
 	db 40, WING_ATTACK
+	db 42, ROOST
 	db 49, CONFUSE_RAY
 	db 0 ; no more level-up moves
 
@@ -3332,6 +3346,7 @@ EnteiEvosAttacks:
 	db 61, SWAGGER
 	db 71, FIRE_BLAST
 	db 81, CALM_MIND
+	db 81, FLARE_BLITZ
 	db 0 ; no more level-up moves
 
 SuicuneEvosAttacks:
