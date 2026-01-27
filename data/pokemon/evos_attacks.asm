@@ -377,7 +377,6 @@ RaichuEvosAttacks:
 	db 1, TAIL_WHIP
 	db 1, QUICK_ATTACK
 	db 1, THUNDERBOLT
-	db 1, VOLT_SWITCH
 	db 0 ; no more level-up moves
 
 SandshrewEvosAttacks:
@@ -1145,7 +1144,6 @@ MagnetonEvosAttacks:
 	db 27, LOCK_ON
 	db 35, SWIFT
 	db 43, SCREECH
-	db 48, VOLT_SWITCH
 	db 53, ZAP_CANNON
 	db 0 ; no more level-up moves
 
@@ -1756,7 +1754,6 @@ ElectabuzzEvosAttacks:
 	db 36, SCREECH
 	db 42, BULK_UP
 	db 47, THUNDERBOLT
-	db 52, VOLT_SWITCH
 	db 58, THUNDER
 	db 0 ; no more level-up moves
 
@@ -1885,7 +1882,6 @@ JolteonEvosAttacks:
 	db 42, THUNDER_WAVE
 	db 47, AGILITY
 	db 52, THUNDER
-	db 57, VOLT_SWITCH
 	db 0 ; no more level-up moves
 
 FlareonEvosAttacks:
@@ -2530,7 +2526,6 @@ AmpharosEvosAttacks:
 	db 27, COTTON_SPORE
 	db 30, THUNDERPUNCH
 	db 42, LIGHT_SCREEN
-	db 50, VOLT_SWITCH
 	db 57, THUNDER
 	db 0 ; no more level-up moves
 
