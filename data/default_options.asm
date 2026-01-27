@@ -1,6 +1,6 @@
 DefaultOptions:
-; wOptions: med text speed
-	db TEXT_DELAY_MED
+; wOptions: fast text speed + stereo sound (changed from medium/mono)
+	db TEXT_DELAY_FAST | (1 << STEREO)
 ; wSaveFileExists: no
 	db FALSE
 ; wTextboxFrame: frame 1

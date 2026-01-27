@@ -2551,8 +2551,8 @@ PlayerAttackDamage:
 	ld d, a
 	ret z
 
-	ld a, [hl]
-	cp SPECIAL
+	ld a, [wCurPlayerMove]
+	call GetMoveCategory
 	jr nc, .special
 
 ; physical
@@ -2587,9 +2587,30 @@ PlayerAttackDamage:
 
 	ld a, [wEnemyScreens]
 	bit SCREENS_LIGHT_SCREEN, a
-	jr z, .specialcrit
+	jr z, .check_sandstorm
 	sla c
 	rl b
+
+.check_sandstorm
+; Rock types get 1.5x Sp.Def in Sandstorm
+	ld a, [wBattleWeather]
+	cp WEATHER_SANDSTORM
+	jr nz, .specialcrit
+	ld a, [wEnemyMonType1]
+	cp ROCK
+	jr z, .apply_sandstorm_boost
+	ld a, [wEnemyMonType2]
+	cp ROCK
+	jr nz, .specialcrit
+.apply_sandstorm_boost
+	ld a, c
+	srl b
+	rr c
+	add c
+	ld c, a
+	ld a, b
+	adc 0
+	ld b, a
 
 .specialcrit
 	ld hl, wBattleMonSpclAtk
@@ -2610,6 +2631,8 @@ PlayerAttackDamage:
 .thickclub
 ; Note: Returns player attack at hl in hl.
 	call ThickClubBoost
+; Light Ball now also boosts Pikachu's physical Attack
+	call LightBallBoost
 
 .done
 	call TruncateHL_BC
@@ -2670,8 +2693,8 @@ CheckDamageStatsCritical:
 	ldh a, [hBattleTurn]
 	and a
 	jr nz, .enemy
-	ld a, [wPlayerMoveStructType]
-	cp SPECIAL
+	ld a, [wCurPlayerMove]
+	call GetMoveCategory
 ; special
 	ld a, [wPlayerSAtkLevel]
 	ld b, a
@@ -2684,8 +2707,8 @@ CheckDamageStatsCritical:
 	jr .end
 
 .enemy
-	ld a, [wEnemyMoveStructType]
-	cp SPECIAL
+	ld a, [wCurEnemyMove]
+	call GetMoveCategory
 ; special
 	ld a, [wEnemySAtkLevel]
 	ld b, a
@@ -2781,8 +2804,8 @@ EnemyAttackDamage:
 	and a
 	ret z
 
-	ld a, [hl]
-	cp SPECIAL
+	ld a, [wCurEnemyMove]
+	call GetMoveCategory
 	jr nc, .special
 
 ; physical
@@ -2817,9 +2840,30 @@ EnemyAttackDamage:
 
 	ld a, [wPlayerScreens]
 	bit SCREENS_LIGHT_SCREEN, a
-	jr z, .specialcrit
+	jr z, .check_sandstorm
 	sla c
 	rl b
+
+.check_sandstorm
+; Rock types get 1.5x Sp.Def in Sandstorm
+	ld a, [wBattleWeather]
+	cp WEATHER_SANDSTORM
+	jr nz, .specialcrit
+	ld a, [wBattleMonType1]
+	cp ROCK
+	jr z, .apply_sandstorm_boost
+	ld a, [wBattleMonType2]
+	cp ROCK
+	jr nz, .specialcrit
+.apply_sandstorm_boost
+	ld a, c
+	srl b
+	rr c
+	add c
+	ld c, a
+	ld a, b
+	adc 0
+	ld b, a
 
 .specialcrit
 	ld hl, wEnemyMonSpclAtk
@@ -2837,6 +2881,8 @@ EnemyAttackDamage:
 
 .thickclub
 	call ThickClubBoost
+; Light Ball now also boosts Pikachu's physical Attack
+	call LightBallBoost
 
 .done
 	call TruncateHL_BC
@@ -3108,13 +3154,24 @@ DEF DAMAGE_CAP EQU MAX_DAMAGE - MIN_DAMAGE
 	and a
 	ret z
 
-; x2
+; x1.5 (changed from x2)
+; Add half of damage to itself: damage + damage/2 = damage * 1.5
 	ldh a, [hQuotient + 3]
-	sla a
+	ld b, a ; save low byte
+	ldh a, [hQuotient + 2]
+	ld c, a ; save high byte
+
+; Divide by 2 (shift right)
+	srl c
+	rr b
+
+; Add half to original
+	ldh a, [hQuotient + 3]
+	add b
 	ldh [hQuotient + 3], a
 
 	ldh a, [hQuotient + 2]
-	rl a
+	adc c
 	ldh [hQuotient + 2], a
 
 ; Cap at $ffff.
@@ -3588,13 +3645,11 @@ BattleCommand_SleepTarget:
 
 	call AnimateCurrentMove
 
+; Sleep now lasts 1-3 turns instead of 1-7
 .random_loop
 	call BattleRandom
-	and SLP_MASK
-	jr z, .random_loop
-	cp SLP_MASK
-	jr z, .random_loop
-	inc a
+	and %11 ; 0-3 range instead of SLP_MASK (0-7)
+	jr z, .random_loop ; reject 0
 	ld [de], a
 	call UpdateOpponentInParty
 	call RefreshBattleHuds
@@ -3613,26 +3668,7 @@ BattleCommand_SleepTarget:
 	jp StdBattleTextbox
 
 .CheckAIRandomFail:
-	; Enemy turn
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .dont_fail
-
-	; Not in link battle
-	ld a, [wLinkMode]
-	and a
-	jr nz, .dont_fail
-
-	; Not locked-on by the enemy
-	ld a, [wPlayerSubStatus5]
-	bit SUBSTATUS_LOCK_ON, a
-	jr nz, .dont_fail
-
-	call BattleRandom
-	cp 25 percent + 1 ; 25% chance AI fails
-	ret c
-
-.dont_fail
+; AI no longer has 25% chance to fail with status moves
 	xor a
 	ret
 
@@ -3647,6 +3683,8 @@ BattleCommand_PoisonTarget:
 	and EFFECTIVENESS_MASK
 	ret z
 	call CheckIfTargetIsPoisonType
+	ret z
+	call CheckIfTargetIsSteelType ; Steel types immune to poison
 	ret z
 	call GetOpponentItem
 	ld a, b
@@ -3678,6 +3716,9 @@ BattleCommand_Poison:
 	call CheckIfTargetIsPoisonType
 	jp z, .failed
 
+	call CheckIfTargetIsSteelType ; Steel types immune to poison
+	jp z, .failed
+
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	ld b, a
@@ -3702,23 +3743,7 @@ BattleCommand_Poison:
 	and a
 	jr nz, .failed
 
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .dont_sample_failure
-
-	ld a, [wLinkMode]
-	and a
-	jr nz, .dont_sample_failure
-
-	ld a, [wPlayerSubStatus5]
-	bit SUBSTATUS_LOCK_ON, a
-	jr nz, .dont_sample_failure
-
-	call BattleRandom
-	cp 25 percent + 1 ; 25% chance AI fails
-	jr c, .failed
-
-.dont_sample_failure
+; AI no longer has 25% chance to fail with poison
 	call CheckSubstituteOpp
 	jr nz, .failed
 	ld a, [wAttackMissed]
@@ -3769,6 +3794,27 @@ BattleCommand_Poison:
 	ret
 
 CheckIfTargetIsPoisonType:
+	ld b, POISON
+	jr CheckIfTargetIsType
+
+CheckIfTargetIsElectricType:
+	ld b, ELECTRIC
+	jr CheckIfTargetIsType
+
+CheckIfTargetIsFireType:
+	ld b, FIRE
+	jr CheckIfTargetIsType
+
+CheckIfTargetIsIceType:
+	ld b, ICE
+	jr CheckIfTargetIsType
+
+CheckIfTargetIsSteelType:
+	ld b, STEEL
+	; fallthrough
+
+CheckIfTargetIsType:
+; Check if target is type b. Return z if match.
 	ld de, wEnemyMonType1
 	ldh a, [hBattleTurn]
 	and a
@@ -3777,10 +3823,10 @@ CheckIfTargetIsPoisonType:
 .ok
 	ld a, [de]
 	inc de
-	cp POISON
+	cp b
 	ret z
 	ld a, [de]
-	cp POISON
+	cp b
 	ret
 
 PoisonOpponent:
@@ -3904,7 +3950,7 @@ BattleCommand_BurnTarget:
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
 	ret z
-	call CheckMoveTypeMatchesTarget ; Don't burn a Fire-type
+	call CheckIfTargetIsFireType ; Fire types immune to burn
 	ret z
 	call GetOpponentItem
 	ld a, b
@@ -3971,7 +4017,7 @@ BattleCommand_FreezeTarget:
 	ld a, [wBattleWeather]
 	cp WEATHER_SUN
 	ret z
-	call CheckMoveTypeMatchesTarget ; Don't freeze an Ice-type
+	call CheckIfTargetIsIceType ; Ice types immune to freeze
 	ret z
 	call GetOpponentItem
 	ld a, b
@@ -4018,6 +4064,8 @@ BattleCommand_ParalyzeTarget:
 	ret nz
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
+	ret z
+	call CheckIfTargetIsElectricType ; Electric types immune to paralysis
 	ret z
 	call GetOpponentItem
 	ld a, b
@@ -4316,31 +4364,7 @@ BattleCommand_StatDown:
 	inc b
 
 .ComputerMiss:
-; Computer opponents have a 25% chance of failing.
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .DidntMiss
-
-	ld a, [wLinkMode]
-	and a
-	jr nz, .DidntMiss
-
-; Lock-On still always works.
-	ld a, [wPlayerSubStatus5]
-	bit SUBSTATUS_LOCK_ON, a
-	jr nz, .DidntMiss
-
-; Attacking moves that also lower accuracy are unaffected.
-	ld a, BATTLE_VARS_MOVE_EFFECT
-	call GetBattleVar
-	cp EFFECT_ACCURACY_DOWN_HIT
-	jr z, .DidntMiss
-
-	call BattleRandom
-	cp 25 percent + 1 ; 25% chance AI fails
-	jr c, .Failed
-
-.DidntMiss:
+; AI no longer has 25% chance to fail with stat-lowering moves
 	call CheckSubstituteOpp
 	jr nz, .Failed
 
@@ -5634,11 +5658,23 @@ BattleCommand_Recoil:
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVar
 	ld d, a
+; Struggle uses 1/4 max HP recoil instead of damage-based
+	cp STRUGGLE
+	jr z, .struggle_recoil
 ; get 1/4 damage or 1 HP, whichever is higher
 	ld a, [wCurDamage]
 	ld b, a
 	ld a, [wCurDamage + 1]
 	ld c, a
+	jr .calculate_recoil
+.struggle_recoil
+; get 1/4 max HP
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	ld c, a
+	dec hl
+.calculate_recoil
 	srl b
 	rr c
 	srl b
@@ -5793,6 +5829,8 @@ BattleCommand_Paralyze:
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
 	jr z, .didnt_affect
+	call CheckIfTargetIsElectricType ; Electric types immune to paralysis
+	jr z, .didnt_affect
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_PARALYZE
@@ -5805,23 +5843,7 @@ BattleCommand_Paralyze:
 	jp StdBattleTextbox
 
 .no_item_protection
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .dont_sample_failure
-
-	ld a, [wLinkMode]
-	and a
-	jr nz, .dont_sample_failure
-
-	ld a, [wPlayerSubStatus5]
-	bit SUBSTATUS_LOCK_ON, a
-	jr nz, .dont_sample_failure
-
-	call BattleRandom
-	cp 25 percent + 1 ; 25% chance AI fails
-	jr c, .failed
-
-.dont_sample_failure
+; AI no longer has 25% chance to fail with paralyze
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a
@@ -6698,16 +6720,31 @@ GetMoveAttr:
 	ret
 
 GetMoveData:
-; Copy move struct a to de.
+; Copy move struct a to de (only first 7 bytes, not category).
 	ld hl, Moves
 	ld bc, MOVE_LENGTH
 	call AddNTimes
+	ld bc, MOVE_STRUCT_LENGTH ; Only copy 7 bytes to RAM struct
 	ld a, BANK(Moves)
 	jp FarCopyBytes
 
 GetMoveByte:
 	ld a, BANK(Moves)
 	jp GetFarByte
+
+GetMoveCategory:
+; Return category of move a in a.
+; Sets carry if physical (a == CATEGORY_PHYSICAL).
+	push hl
+	push bc
+	ld hl, Moves + MOVE_CATEGORY
+	ld bc, MOVE_LENGTH
+	call AddNTimes
+	call GetMoveByte
+	cp CATEGORY_SPECIAL
+	pop bc
+	pop hl
+	ret
 
 DisappearUser:
 	farcall _DisappearUser

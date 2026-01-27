@@ -1338,7 +1338,7 @@ HandleMysteryberry:
 	cp SKETCH
 	ld b, 1
 	jr z, .sketch
-	ld b, 5
+	ld b, 10 ; Mystery Berry now restores 10 PP (was 5)
 .sketch
 	ld a, [de]
 	add b
@@ -1484,7 +1484,7 @@ HandleDefrost:
 	ret nz
 
 	call BattleRandom
-	cp 10 percent
+	cp 20 percent ; Increased defrost chance from 10% to 20%
 	ret nc
 	xor a
 	ld [wBattleMonStatus], a
@@ -1505,7 +1505,7 @@ HandleDefrost:
 	and a
 	ret nz
 	call BattleRandom
-	cp 10 percent
+	cp 20 percent ; Increased defrost chance from 10% to 20%
 	ret nc
 	xor a
 	ld [wEnemyMonStatus], a
@@ -1691,7 +1691,7 @@ HandleWeather:
 	ld de, ANIM_IN_SANDSTORM
 	call Call_PlayBattleAnim
 	call SwitchTurnCore
-	call GetEighthMaxHP
+	call GetSixteenthMaxHP ; 1/16 instead of 1/8
 	call SubtractHPFromUser
 
 	ld hl, SandstormHitsText
@@ -4029,7 +4029,12 @@ HandleHPHealingItem:
 	callfar GetOpponentItem
 	ld a, b
 	cp HELD_BERRY
+	jr z, .valid_berry
+	cp HELD_BERRY_QUARTER
 	ret nz
+.valid_berry
+	ld a, b
+	ld [wTempByteValue], a ; save held effect type
 	ld de, wEnemyMonHP + 1
 	ld hl, wEnemyMonMaxHP
 	ldh a, [hBattleTurn]
@@ -4067,19 +4072,40 @@ HandleHPHealingItem:
 	ret nc
 
 .less
+	push de
+	push bc
 	call ItemRecoveryAnim
+	pop bc
+	pop de
+	; Check if this is a quarter HP berry
+	ld a, [wTempByteValue]
+	cp HELD_BERRY_QUARTER
+	jr nz, .use_fixed_amount
+	; Calculate 25% max HP - result in bc
+	push de
+	call GetQuarterMaxHP
+	pop de
+	jr .do_restore
+.use_fixed_amount
+	; use fixed HP amount from item (c), b=0
+	ld b, 0
+.do_restore
+	; bc = heal amount (16-bit)
 	; store max HP in wHPBuffer1
+	push bc
 	ld a, [hli]
 	ld [wHPBuffer1 + 1], a
 	ld a, [hl]
 	ld [wHPBuffer1], a
+	pop bc
+	; Add heal amount to current HP
 	ld a, [de]
 	add c
 	ld [wHPBuffer3], a
 	ld c, a
 	dec de
 	ld a, [de]
-	adc 0
+	adc b
 	ld [wHPBuffer3 + 1], a
 	ld b, a
 	ld a, [hld]
@@ -6539,6 +6565,9 @@ BadgeStatBoosts:
 
 ; The boosted stats are in order, except PlainBadge and MineralBadge's boosts are swapped.
 
+; Badge stat boosts are disabled for competitive fairness
+	ret
+
 	ld a, [wLinkMode]
 	and a
 	ret nz
@@ -6738,7 +6767,7 @@ FinishBattleAnim:
 	pop af
 	ret
 
-GiveExperiencePoints:
+GiveExperiencePoints::
 ; Give experience.
 ; Don't give experience if linked or in the Battle Tower.
 	ld a, [wLinkMode]

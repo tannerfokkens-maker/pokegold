@@ -93,7 +93,7 @@ TypeMatchups:
 	db GHOST,        NORMAL,       NO_EFFECT
 	db GHOST,        PSYCHIC_TYPE, SUPER_EFFECTIVE
 	db GHOST,        DARK,         NOT_VERY_EFFECTIVE
-	db GHOST,        STEEL,        NOT_VERY_EFFECTIVE
+	; Gen 6: Steel no longer resists Ghost
 	db GHOST,        GHOST,        SUPER_EFFECTIVE
 	db DRAGON,       DRAGON,       SUPER_EFFECTIVE
 	db DRAGON,       STEEL,        NOT_VERY_EFFECTIVE
@@ -101,13 +101,27 @@ TypeMatchups:
 	db DARK,         PSYCHIC_TYPE, SUPER_EFFECTIVE
 	db DARK,         GHOST,        SUPER_EFFECTIVE
 	db DARK,         DARK,         NOT_VERY_EFFECTIVE
-	db DARK,         STEEL,        NOT_VERY_EFFECTIVE
+	; Gen 6: Steel no longer resists Dark
 	db STEEL,        FIRE,         NOT_VERY_EFFECTIVE
 	db STEEL,        WATER,        NOT_VERY_EFFECTIVE
 	db STEEL,        ELECTRIC,     NOT_VERY_EFFECTIVE
 	db STEEL,        ICE,          SUPER_EFFECTIVE
 	db STEEL,        ROCK,         SUPER_EFFECTIVE
 	db STEEL,        STEEL,        NOT_VERY_EFFECTIVE
+; Fairy type matchups
+	db FAIRY,        FIRE,         NOT_VERY_EFFECTIVE
+	db FAIRY,        POISON,       NOT_VERY_EFFECTIVE
+	db FAIRY,        STEEL,        NOT_VERY_EFFECTIVE
+	db FAIRY,        FIGHTING,     SUPER_EFFECTIVE
+	db FAIRY,        DRAGON,       SUPER_EFFECTIVE
+	db FAIRY,        DARK,         SUPER_EFFECTIVE
+; Types attacking Fairy
+	db FIGHTING,     FAIRY,        NOT_VERY_EFFECTIVE
+	db POISON,       FAIRY,        SUPER_EFFECTIVE
+	db BUG,          FAIRY,        NOT_VERY_EFFECTIVE
+	db DRAGON,       FAIRY,        NO_EFFECT
+	db DARK,         FAIRY,        NOT_VERY_EFFECTIVE
+	db STEEL,        FAIRY,        SUPER_EFFECTIVE
 
 	db -2 ; end (with Foresight)
 
