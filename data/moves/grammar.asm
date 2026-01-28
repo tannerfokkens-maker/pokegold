@@ -9,8 +9,7 @@ MoveGrammar:
 	db STRENGTH
 	db HARDEN
 	db MINIMIZE
-	db SMOKESCREEN
-	db WITHDRAW
+	db SAND_ATTACK
 	db DEFENSE_CURL
 	db EGG_BOMB
 	db SMOG
@@ -49,7 +48,6 @@ MoveGrammar:
 	db AGILITY
 	db MIMIC
 	db DOUBLE_TEAM
-	db BARRAGE
 	db TRANSFORM
 	db STRUGGLE
 	db SCARY_FACE
@@ -66,7 +64,6 @@ MoveGrammar:
 	db HORN_ATTACK
 	db WRAP
 	db THRASH
-	db TAIL_WHIP
 	db LEER
 	db BITE
 	db GROWL
@@ -83,9 +80,9 @@ MoveGrammar:
 	db METRONOME
 	db LICK
 	db CLAMP
-	db CONSTRICT
+	db WRAP
 	db POISON_GAS
-	db BUBBLE
+	db WATER_GUN
 	db SLASH
 	db SPIDER_WEB
 	db NIGHTMARE

@@ -29,6 +29,6 @@ EncoreMoves:
 	db MIND_READER
 	db FLAME_WHEEL
 	db AEROBLAST
-	db COTTON_SPORE
+	db SCARY_FACE
 	db POWDER_SNOW
 	db -1 ; end
