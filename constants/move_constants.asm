@@ -44,7 +44,7 @@
 	const TAKE_DOWN    ; 24
 	const THRASH       ; 25
 	const DOUBLE_EDGE  ; 26
-	const TAIL_WHIP    ; 27
+	const DRAGON_DANCE ; 27
 	const POISON_STING ; 28
 	const TWINEEDLE    ; 29
 	const PIN_MISSILE  ; 2a
@@ -104,7 +104,7 @@
 	const MEDITATE     ; 60
 	const AGILITY      ; 61
 	const QUICK_ATTACK ; 62
-	const RAGE         ; 63
+	const CALM_MIND    ; 63
 	const TELEPORT     ; 64
 	const NIGHT_SHADE  ; 65
 	const MIMIC        ; 66
@@ -113,9 +113,9 @@
 	const RECOVER      ; 69
 	const HARDEN       ; 6a
 	const MINIMIZE     ; 6b
-	const SMOKESCREEN  ; 6c
+	const BULK_UP      ; 6c
 	const CONFUSE_RAY  ; 6d
-	const WITHDRAW     ; 6e
+	const HONE_CLAWS   ; 6e
 	const DEFENSE_CURL ; 6f
 	const BARRIER      ; 70
 	const LIGHT_SCREEN ; 71
@@ -137,7 +137,7 @@
 	const SWIFT        ; 81
 	const SKULL_BASH   ; 82
 	const SPIKE_CANNON ; 83
-	const CONSTRICT    ; 84
+	const CLOSE_COMBAT ; 84
 	const AMNESIA      ; 85
 	const KINESIS      ; 86
 	const SOFTBOILED   ; 87
@@ -145,12 +145,12 @@
 	const GLARE        ; 89
 	const DREAM_EATER  ; 8a
 	const POISON_GAS   ; 8b
-	const BARRAGE      ; 8c
+	const BRAVE_BIRD   ; 8c
 	const LEECH_LIFE   ; 8d
 	const LOVELY_KISS  ; 8e
 	const SKY_ATTACK   ; 8f
 	const TRANSFORM    ; 90
-	const BUBBLE       ; 91
+	const FLARE_BLITZ  ; 91
 	const DIZZY_PUNCH  ; 92
 	const SPORE        ; 93
 	const FLASH        ; 94
@@ -183,7 +183,7 @@
 	const FLAIL        ; af
 	const CONVERSION2  ; b0
 	const AEROBLAST    ; b1
-	const COTTON_SPORE ; b2
+	const U_TURN       ; b2
 	const REVERSAL     ; b3
 	const SPITE        ; b4
 	const POWDER_SNOW  ; b5
@@ -258,17 +258,9 @@
 	const WHIRLPOOL    ; fa
 	const BEAT_UP      ; fb
 	; New moves (Gen 3+)
-	const DRAGON_DANCE ; fc
-	const CALM_MIND    ; fd
-	const BULK_UP      ; fe
-	const HONE_CLAWS   ; ff
-	const CLOSE_COMBAT ; 100
-	const BRAVE_BIRD   ; 101
-	const FLARE_BLITZ  ; 102
-	const U_TURN       ; 103
-	const VOLT_SWITCH  ; 104
-	const ROOST        ; 105
-	const WILL_O_WISP  ; 106
+	const VOLT_SWITCH  ; fc
+	const ROOST        ; fd
+	const WILL_O_WISP  ; fe
 DEF NUM_ATTACKS EQU const_value - 1
 
 DEF CANNOT_MOVE EQU $ff

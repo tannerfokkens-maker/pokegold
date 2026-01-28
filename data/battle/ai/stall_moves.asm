@@ -3,7 +3,6 @@
 
 StallMoves:
 	db SWORDS_DANCE
-	db TAIL_WHIP
 	db LEER
 	db GROWL
 	db DISABLE
@@ -14,11 +13,9 @@ StallMoves:
 	db STRING_SHOT
 	db MEDITATE
 	db AGILITY
-	db RAGE
 	db MIMIC
 	db SCREECH
 	db HARDEN
-	db WITHDRAW
 	db DEFENSE_CURL
 	db BARRIER
 	db LIGHT_SCREEN
