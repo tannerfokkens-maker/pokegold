@@ -70,7 +70,7 @@ AskTeachTMHM:
 	ld [wOptions], a
 	ret
 
-ChooseMonToLearnTMHM:
+ChooseMonToLearnTMHM::
 	ld hl, wStringBuffer2
 	ld de, wTMHMMoveNameBackup
 	ld bc, MOVE_NAME_LENGTH - 1

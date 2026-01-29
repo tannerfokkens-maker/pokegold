@@ -62,11 +62,18 @@ CheckBadge:
 	text_end
 
 CheckPartyMove:
-; Check if a monster in your party has move d.
+; Check if a monster in your party has move d, or
+; can learn move d and you have TM/HM e.
+; Input: d = move, e = TM/HM number (1-indexed), or -1 for no fallback
 
-	ld e, 0
 	xor a
 	ld [wCurPartyMon], a
+	ld a, d
+	ld [wPutativeTMHMMove], a
+	ld a, e
+	ld [wCurTMHM], a
+
+	ld e, 0
 .loop
 	ld c, e
 	ld b, 0
@@ -74,9 +81,9 @@ CheckPartyMove:
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .no
+	jr z, .maybe
 	cp -1
-	jr z, .no
+	jr z, .maybe
 	cp EGG
 	jr z, .next
 
@@ -84,6 +91,8 @@ CheckPartyMove:
 	ld hl, wPartyMon1Moves
 	ld a, e
 	call AddNTimes
+	ld a, [wPutativeTMHMMove]
+	ld d, a
 	ld b, NUM_MOVES
 .check
 	ld a, [hli]
@@ -101,6 +110,53 @@ CheckPartyMove:
 	ld [wCurPartyMon], a ; which mon has the move
 	xor a
 	ret
+
+.maybe
+; No Pokemon knows the move. Check if we have the TM/HM and a compatible mon.
+	ld a, [wCurTMHM]
+	inc a
+	jr z, .no ; e was -1, no fallback
+	dec a
+	; a = TM/HM number (1-indexed)
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, wTMsHMs
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .no ; don't have this TM/HM
+
+	; Have the TM/HM. Check if any party member can learn it.
+	ld e, 0
+.loop2
+	ld a, [wPartyCount]
+	cp e
+	jr z, .no
+	ld c, e
+	ld b, 0
+	ld hl, wPartySpecies
+	add hl, bc
+	ld a, [hl]
+	cp EGG
+	jr z, .next2
+	ld [wCurPartySpecies], a
+	push de
+	predef CanLearnTMHMMove
+	ld a, c
+	pop de
+	and a
+	jr nz, .yes2
+.next2
+	inc e
+	jr .loop2
+
+.yes2
+	ld a, e
+	ld [wCurPartyMon], a
+	xor a
+	ret
+
 .no
 	scf
 	ret
@@ -491,7 +547,7 @@ TrySurfOW::
 	call CheckEngineFlag
 	jr c, .quit
 
-	ld d, SURF
+	lb de, SURF, SURF_TMNUM
 	call CheckPartyMove
 	jr c, .quit
 
@@ -681,7 +737,7 @@ Script_UsedWaterfall:
 	text_end
 
 TryWaterfallOW::
-	ld d, WATERFALL
+	lb de, WATERFALL, WATERFALL_TMNUM
 	call CheckPartyMove
 	jr c, .failed
 	ld de, ENGINE_RISINGBADGE
@@ -1031,7 +1087,7 @@ BouldersMayMoveText:
 	text_end
 
 TryStrengthOW:
-	ld d, STRENGTH
+	lb de, STRENGTH, STRENGTH_TMNUM
 	call CheckPartyMove
 	jr c, .nope
 
@@ -1165,7 +1221,7 @@ DisappearWhirlpool:
 	ret
 
 TryWhirlpoolOW::
-	ld d, WHIRLPOOL
+	lb de, WHIRLPOOL, WHIRLPOOL_TMNUM
 	call CheckPartyMove
 	jr c, .failed
 	ld de, ENGINE_GLACIERBADGE
@@ -1260,7 +1316,7 @@ HeadbuttScript:
 	end
 
 TryHeadbuttOW::
-	ld d, HEADBUTT
+	lb de, HEADBUTT, HEADBUTT_TMNUM
 	call CheckPartyMove
 	jr c, .no
 
@@ -1384,7 +1440,7 @@ AskRockSmashText:
 	text_end
 
 HasRockSmash:
-	ld d, ROCK_SMASH
+	lb de, ROCK_SMASH, ROCK_SMASH_TMNUM
 	call CheckPartyMove
 	jr nc, .yes
 ; no
@@ -1739,7 +1795,7 @@ GotOffBikeText:
 	text_end
 
 TryCutOW::
-	ld d, CUT
+	lb de, CUT, CUT_TMNUM
 	call CheckPartyMove
 	jr c, .cant_cut
 

@@ -134,7 +134,7 @@ MoveDescriptions::
 	dw SpikeCannonDescription
 	dw ConstrictDescription
 	dw AmnesiaDescription
-	dw KinesisDescription
+	dw MoonblastDescription
 	dw SoftboiledDescription
 	dw HiJumpKickDescription
 	dw GlareDescription
@@ -159,7 +159,7 @@ MoveDescriptions::
 	dw RestDescription
 	dw RockSlideDescription
 	dw HyperFangDescription
-	dw SharpenDescription
+	dw PlayRoughDescription
 	dw ConversionDescription
 	dw TriAttackDescription
 	dw SuperFangDescription
@@ -252,17 +252,14 @@ MoveDescriptions::
 	dw RockSmashDescription
 	dw WhirlpoolDescription
 	dw BeatUpDescription
+	dw VoltSwitchDescription
+	dw RoostDescription
+	dw WillOWispDescription
 	assert_table_length NUM_ATTACKS
-	dw MoveFCDescription
-	dw MoveFDDescription
-	dw MoveFEDescription
 	dw MoveFFDescription
 	dw Move00Description
 	assert_table_length $100
 
-MoveFCDescription:
-MoveFDDescription:
-MoveFEDescription:
 MoveFFDescription:
 Move00Description:
 	db "?@"
@@ -799,9 +796,9 @@ AmnesiaDescription:
 	db   "Sharply raises the"
 	next "user's SPCL.DEF.@"
 
-KinesisDescription:
-	db   "Reduces the foe's"
-	next "accuracy.@"
+MoonblastDescription:
+	db   "An attack that may"
+	next "lower SPCL.ATK.@"
 
 SoftboiledDescription:
 	db   "Restores HP by 1/2"
@@ -899,9 +896,9 @@ HyperFangDescription:
 	db   "An attack that may"
 	next "cause flinching.@"
 
-SharpenDescription:
-	db   "A move that raises"
-	next "the user's ATTACK.@"
+PlayRoughDescription:
+	db   "An attack that may"
+	next "lower ATTACK.@"
 
 ConversionDescription:
 	db   "Change user's type"
@@ -1270,3 +1267,15 @@ WhirlpoolDescription:
 BeatUpDescription:
 	db   "Party #MON join"
 	next "in the attack.@"
+
+VoltSwitchDescription:
+	db   "Switch out after"
+	next "attacking.@"
+
+RoostDescription:
+	db   "Restores HP by 1/2"
+	next "the max HP.@"
+
+WillOWispDescription:
+	db   "Inflicts a burn on"
+	next "the foe.@"

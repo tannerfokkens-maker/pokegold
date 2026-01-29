@@ -9,25 +9,25 @@ KantoGrassWildMons:
 	db 17, DIGLETT
 	db 19, DIGLETT
 	db 13, DIGLETT
-	db 19, DUGTRIO
 	db 24, DUGTRIO
-	db 29, DUGTRIO
+	db 24, DUGTRIO
+	db 24, DUGTRIO
 	; day
 	db 15, DIGLETT
 	db 17, DIGLETT
 	db 19, DIGLETT
 	db 13, DIGLETT
-	db 19, DUGTRIO
-	db 24, DUGTRIO
-	db 29, DUGTRIO
+	db 16, DUGTRIO
+	db 16, DUGTRIO
+	db 16, DUGTRIO
 	; nite
 	db 15, DIGLETT
 	db 17, DIGLETT
 	db 19, DIGLETT
 	db 13, DIGLETT
-	db 19, DUGTRIO
-	db 24, DUGTRIO
-	db 29, DUGTRIO
+	db 32, DUGTRIO
+	db 32, DUGTRIO
+	db 32, DUGTRIO
 	end_grass_wildmons
 
 	def_grass_wildmons MOUNT_MOON

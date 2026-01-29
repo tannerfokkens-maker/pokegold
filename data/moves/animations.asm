@@ -256,7 +256,7 @@ BattleAnimations::
 	; New moves (Gen 3+)
 	dw BattleAnim_Thunderbolt ; Volt Switch
 	dw BattleAnim_Recover ; Roost
-	dw BattleAnim_FireBlast ; Will-O-Wisp
+	dw BattleAnim_Ember ; Will-O-Wisp
 	assert_table_length NUM_ATTACKS + 1
 	dw BattleAnim_SweetScent2
 	assert_table_length $100

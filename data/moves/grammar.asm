@@ -19,7 +19,6 @@ MoveGrammar:
 	db ACID_ARMOR
 	db BONEMERANG
 	db REST
-	db SHARPEN
 	db SUBSTITUTE
 	db MIND_READER
 	db SNORE

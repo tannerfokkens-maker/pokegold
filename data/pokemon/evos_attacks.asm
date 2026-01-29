@@ -481,6 +481,7 @@ ClefairyEvosAttacks:
 	db 26, DEFENSE_CURL
 	db 34, METRONOME
 	db 43, MOONLIGHT
+	db 46, MOONBLAST
 	db 53, LIGHT_SCREEN
 	db 0 ; no more level-up moves
 
@@ -490,6 +491,7 @@ ClefableEvosAttacks:
 	db 1, DOUBLESLAP
 	db 1, METRONOME
 	db 1, MOONLIGHT
+	db 1, PLAY_ROUGH
 	db 0 ; no more level-up moves
 
 VulpixEvosAttacks:
@@ -535,6 +537,7 @@ WigglytuffEvosAttacks:
 	db 1, DISABLE
 	db 1, DEFENSE_CURL
 	db 1, DOUBLESLAP
+	db 1, PLAY_ROUGH
 	db 0 ; no more level-up moves
 
 ZubatEvosAttacks:
@@ -852,7 +855,7 @@ KadabraEvosAttacks:
 	db EVOLVE_TRADE, -1, ALAKAZAM
 	db 0 ; no more evolutions
 	db 1, TELEPORT
-	db 1, KINESIS
+	db 1, DISABLE
 	db 1, CONFUSION
 	db 16, CONFUSION
 	db 18, DISABLE
@@ -867,7 +870,7 @@ KadabraEvosAttacks:
 AlakazamEvosAttacks:
 	db 0 ; no more evolutions
 	db 1, TELEPORT
-	db 1, KINESIS
+	db 1, DISABLE
 	db 1, CONFUSION
 	db 16, CONFUSION
 	db 18, DISABLE
@@ -978,7 +981,7 @@ TentacoolEvosAttacks:
 	db 6, SUPERSONIC
 	db 12, WRAP
 	db 19, ACID
-	db 25, WATER_GUNBEAM
+	db 25, BUBBLEBEAM
 	db 30, WRAP
 	db 36, BARRIER
 	db 43, SCREECH
@@ -993,7 +996,7 @@ TentacruelEvosAttacks:
 	db 6, SUPERSONIC
 	db 12, WRAP
 	db 19, ACID
-	db 25, WATER_GUNBEAM
+	db 25, BUBBLEBEAM
 	db 30, WRAP
 	db 38, BARRIER
 	db 47, SCREECH
@@ -1671,7 +1674,7 @@ StaryuEvosAttacks:
 	db 13, RAPID_SPIN
 	db 19, RECOVER
 	db 25, SWIFT
-	db 31, WATER_GUNBEAM
+	db 31, BUBBLEBEAM
 	db 37, MINIMIZE
 	db 43, LIGHT_SCREEN
 	db 50, HYDRO_PUMP
@@ -1682,7 +1685,7 @@ StarmieEvosAttacks:
 	db 1, TACKLE
 	db 1, RAPID_SPIN
 	db 1, RECOVER
-	db 1, WATER_GUNBEAM
+	db 1, BUBBLEBEAM
 	db 37, CONFUSE_RAY
 	db 0 ; no more level-up moves
 
@@ -1897,7 +1900,7 @@ PorygonEvosAttacks:
 	db 9, AGILITY
 	db 12, PSYBEAM
 	db 20, RECOVER
-	db 24, SHARPEN
+	db 24, HARDEN
 	db 32, LOCK_ON
 	db 36, TRI_ATTACK
 	db 44, ZAP_CANNON
@@ -2532,7 +2535,8 @@ MarillEvosAttacks:
 	db 6, LEER
 	db 10, WATER_GUN
 	db 15, ROLLOUT
-	db 21, WATER_GUNBEAM
+	db 21, BUBBLEBEAM
+	db 23, PLAY_ROUGH
 	db 28, DOUBLE_EDGE
 	db 36, RAIN_DANCE
 	db 0 ; no more level-up moves
@@ -2547,7 +2551,8 @@ AzumarillEvosAttacks:
 	db 6, LEER
 	db 10, WATER_GUN
 	db 15, ROLLOUT
-	db 25, WATER_GUNBEAM
+	db 25, BUBBLEBEAM
+	db 28, PLAY_ROUGH
 	db 36, DOUBLE_EDGE
 	db 48, RAIN_DANCE
 	db 0 ; no more level-up moves
@@ -2865,6 +2870,7 @@ SnubbullEvosAttacks:
 	db 19, LICK
 	db 26, ROAR
 	db 34, FOCUS_ENERGY
+	db 37, PLAY_ROUGH
 	db 43, TAKE_DOWN
 	db 0 ; no more level-up moves
 
@@ -2878,6 +2884,7 @@ GranbullEvosAttacks:
 	db 19, LICK
 	db 28, ROAR
 	db 38, FOCUS_ENERGY
+	db 43, PLAY_ROUGH
 	db 51, TAKE_DOWN
 	db 0 ; no more level-up moves
 
@@ -3034,7 +3041,7 @@ CorsolaEvosAttacks:
 	db 7, HARDEN
 	db 13, WATER_GUN
 	db 19, RECOVER
-	db 25, WATER_GUNBEAM
+	db 25, BUBBLEBEAM
 	db 31, SPIKE_CANNON
 	db 37, MIRROR_COAT
 	db 43, ANCIENTPOWER
@@ -3047,7 +3054,7 @@ RemoraidEvosAttacks:
 	db 11, LOCK_ON
 	db 22, PSYBEAM
 	db 22, AURORA_BEAM
-	db 22, WATER_GUNBEAM
+	db 22, BUBBLEBEAM
 	db 33, FOCUS_ENERGY
 	db 44, ICE_BEAM
 	db 55, HYPER_BEAM
@@ -3059,7 +3066,7 @@ OctilleryEvosAttacks:
 	db 11, WRAP
 	db 22, PSYBEAM
 	db 22, AURORA_BEAM
-	db 22, WATER_GUNBEAM
+	db 22, BUBBLEBEAM
 	db 25, OCTAZOOKA
 	db 38, FOCUS_ENERGY
 	db 54, ICE_BEAM
@@ -3077,7 +3084,7 @@ MantineEvosAttacks:
 	db 1, TACKLE
 	db 1, WATER_GUN
 	db 10, SUPERSONIC
-	db 18, WATER_GUNBEAM
+	db 18, BUBBLEBEAM
 	db 25, TAKE_DOWN
 	db 32, AGILITY
 	db 40, WING_ATTACK
@@ -3333,7 +3340,7 @@ SuicuneEvosAttacks:
 	db 11, WATER_GUN
 	db 21, ROAR
 	db 31, GUST
-	db 41, WATER_GUNBEAM
+	db 41, BUBBLEBEAM
 	db 51, MIST
 	db 61, MIRROR_COAT
 	db 71, HYDRO_PUMP

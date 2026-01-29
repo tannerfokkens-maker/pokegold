@@ -2007,7 +2007,7 @@ wCutWhirlpoolReplacementBlock:: db
 wCutWhirlpoolAnimationType::
 wStrengthSpecies::
 wFishingResult:: db
-	ds 1
+wCurTMHM:: db ; TM/HM number for CheckPartyMove fallback
 wFieldMoveDataEnd::
 
 NEXTU

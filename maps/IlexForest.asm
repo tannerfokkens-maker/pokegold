@@ -271,17 +271,26 @@ IlexForestCharcoalMasterScript:
 IlexForestHeadbuttGuyScript:
 	faceplayer
 	opentext
-	checkevent EVENT_GOT_TM02_HEADBUTT
-	iftrue .AlreadyGotHeadbutt
 	writetext Text_HeadbuttIntro
-	promptbutton
-	verbosegiveitem TM_HEADBUTT
-	iffalse .BagFull
-	setevent EVENT_GOT_TM02_HEADBUTT
-.AlreadyGotHeadbutt:
+	yesorno
+	iffalse .Refused
+	setval HEADBUTT
+	special MoveTutor
+	ifequal $0, .Taught
+	writetext Text_HeadbuttMaybeLater
+	waitbutton
+	closetext
+	end
+
+.Taught:
 	writetext Text_HeadbuttOutro
 	waitbutton
-.BagFull:
+	closetext
+	end
+
+.Refused:
+	writetext Text_HeadbuttMaybeLater
+	waitbutton
 	closetext
 	end
 
@@ -624,8 +633,12 @@ Text_HeadbuttIntro:
 	para "I'm shaking trees"
 	line "using HEADBUTT."
 
-	para "It's fun. Here,"
-	line "you try it too!"
+	para "Want me to teach"
+	line "it to a #MON?"
+	done
+
+Text_HeadbuttMaybeLater:
+	text "Maybe later, then."
 	done
 
 Text_HeadbuttOutro:

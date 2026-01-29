@@ -139,7 +139,7 @@
 	const SPIKE_CANNON ; 83
 	const CLOSE_COMBAT ; 84
 	const AMNESIA      ; 85
-	const KINESIS      ; 86
+	const MOONBLAST    ; 86
 	const SOFTBOILED   ; 87
 	const HI_JUMP_KICK ; 88
 	const GLARE        ; 89
@@ -164,7 +164,7 @@
 	const REST         ; 9c
 	const ROCK_SLIDE   ; 9d
 	const HYPER_FANG   ; 9e
-	const SHARPEN      ; 9f
+	const PLAY_ROUGH   ; 9f
 	const CONVERSION   ; a0
 	const TRI_ATTACK   ; a1
 	const SUPER_FANG   ; a2
